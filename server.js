@@ -51,3 +51,34 @@ app.post("/api/notes", (req, res) => {
         });
     });
 });
+
+app.delete("/api/notes/:id"), (req, res) => {
+const id = parseInt(req.params.id);
+fs.readFile(path.join(_dirname, "/db/db.json"), "utf8", (err, data) => {
+    if (err) throw err;
+    const db = JSON.parse(data);
+    const newDB = [];
+
+    for (let i = 0; i < db.length; i++) {
+        if (i !== id) {
+            const newNote = {
+                title: db[i].title,
+                text: db[i].text,
+                id: i
+            };
+
+            newDB.push(newNote);
+        }
+    }
+
+    fs.writeFile(path.join(_dirname, "/db/db.json"), JSON.stringify(newDB, null, 2), (err) => {
+        if (err) throw err;
+        res.json(req.body);
+    });
+});
+});
+
+app.listen(PORT, () => {
+    console.log(`App listening on PORT &{PORT}.`);
+
+})
