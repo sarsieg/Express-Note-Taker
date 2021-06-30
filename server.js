@@ -12,22 +12,22 @@ app.use(express.static("public"));
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(_dirname, "/public/index.html"));
+    res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
 app.get("/notes", (req, res) => {
-    res.sendFile(path.join(_dirname, "/public/notes.html"));
+    res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
 app.get("/api/notes", (req, res) => {
-    res.readFile(path.join(_dirname, "/db/db.json"), "utf8", (err, data) => {
+    res.readFile(path.join(__dirname, "/db/db.json"), "utf8", (err, data) => {
         if (err) throw err;
         res.json(JSON.parse(data));
     });
 });
 
 app.post("/api/notes", (req, res) => {
-    fs.readFile(path.join(_dirname, "/db/db.json"), "utf8", (err, data) => {
+    fs.readFile(path.join(__dirname, "/db/db.json"), "utf8", (err, data) => {
         if (err) throw err;
         const db = JSON.parse(data);
         const newDB = [];
@@ -43,7 +43,7 @@ app.post("/api/notes", (req, res) => {
             newDB.push(newNote);
         }
 
-        fs.writeFile(path.join(_dirname, "/db/db.json"), JSON.stringify(newDB, null, 2), (err) => {
+        fs.writeFile(path.join(__dirname, "/db/db.json"), JSON.stringify(newDB, null, 2), (err) => {
             if (err) throw err;
             res.json(req.body);
         })
@@ -52,7 +52,7 @@ app.post("/api/notes", (req, res) => {
 
 app.delete("/api/notes/:id"), (req, res) => {
     const id = parseInt(req.params.id);
-    fs.readFile(path.join(_dirname, "/db/db.json"), "utf8", (err, data) => {
+    fs.readFile(path.join(__dirname, "/db/db.json"), "utf8", (err, data) => {
         if (err) throw err;
         const db = JSON.parse(data);
         const newDB = [];
@@ -69,7 +69,7 @@ app.delete("/api/notes/:id"), (req, res) => {
             }
         }
 
-        fs.writeFile(path.join(_dirname, "/db/db.json"), JSON.stringify(newDB, null, 2), (err) => {
+        fs.writeFile(path.join(__dirname, "/db/db.json"), JSON.stringify(newDB, null, 2), (err) => {
             if (err) throw err;
             res.json(req.body);
         });
