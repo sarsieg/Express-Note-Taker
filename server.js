@@ -3,7 +3,7 @@ const fs = require("fs");
 const express = require("express");
 const path = require("path");
 
-
+// sets up express app and port for listening and let heroku decide a port and if not then to use port 8000
 const app = express();
 const PORT = process.env.PORT || 8000;
 
