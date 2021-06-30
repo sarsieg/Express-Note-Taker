@@ -27,13 +27,16 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
+// add new note received to the `db.json` file that can be saved on the request body and then return the new note to the client
 app.post("/api/notes", (req, res) => {
     let newNote = req.body;
     let noteList = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
     let notelength = (noteList.length).toString();
 
+    // create new property called id based on length and assign it to each json
     newNote.id = notelength;
 
+    // push updated note to the data with the notes history in db.json
     noteList.push(newNote);
 
     fs.writeFileSync("./db/db.json", JSON.stringify(noteList));
