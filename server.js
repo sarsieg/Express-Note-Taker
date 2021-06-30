@@ -7,14 +7,17 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// in a directory named public serve images, javascript files and images
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.json());
 
+// brings you to notes.html
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
+// brings you to read the `db.json` file and return all saved notes as JSON
 app.get("/api/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/db/db.json"));
 });
