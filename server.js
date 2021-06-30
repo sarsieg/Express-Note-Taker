@@ -72,11 +72,11 @@ app.delete("/api/notes/:id"), (req, res) => {
         fs.writeFile(path.join(_dirname, "/db/db.json"), JSON.stringify(newDB, null, 2), (err) => {
             if (err) throw err;
             res.json(req.body);
-        })
-    })
-}
+        });
+    });
+};
 
 app.listen(PORT, () => {
     console.log(`App listening on PORT ${PORT}.`);
 
-});
+})
