@@ -22,6 +22,7 @@ This project creates a simple Express.js based note app that is able to create, 
 ## Deployed Application
 [Live Link](https://sarah-express-note-taker.herokuapp.com/)
 ![Screenshot](/public/assets/images/firstpage.png/)
+![Screenshot](/public/assets/images/newnote.png/)
 
 ## Installation
 You must first run npm install in order to install the following npm package dependencies as specified in the package.json, as well as well as express.js.
