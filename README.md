@@ -43,8 +43,8 @@ node server.js
 3. Application is deployed on [heroku](https://www.heroku.com/)
 
 ## Technologies
-**1. [Express.js](https://expressjs.com/)**
-**2. [Node.js](https://nodejs.ord/en/)**
+1. [Express.js](https://expressjs.com/)
+2. [Node.js](https://nodejs.ord/en/)
 3. HTML
 4. Javascript
 5. CSS
