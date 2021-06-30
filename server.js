@@ -43,16 +43,20 @@ app.post("/api/notes", (req, res) => {
     res.json(noteList);
 })
 
+// delete note according to their tagged id
 app.delete("/api/notes/:id", (req, res) => {
     let noteList = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
     let noteId = (req.params.id).toString();
 
+    // filter all notes that doesn't have matching id and saved them as new array, the matching array will be deleted
     noteList = noteList.filter(selected => {
         return selected.id != noteId;
     })
 
+    // write updated data to db.json and siplay the updated note
     fs.writeFileSync("./db/db.json", JSON.stringify(noteList));
     res.json(noteList);
 });
 
+// listen to the port when it is deployed
 app.listen(PORT, () => console.log("Server listening on port " + PORT));
