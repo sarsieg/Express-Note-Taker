@@ -5,78 +5,47 @@ const path = require("path");
 
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.json());
-
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/index.html"));
-});
 
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
 app.get("/api/notes", (req, res) => {
-    res.readFile(path.join(__dirname, "/db/db.json"), "utf8", (err, data) => {
-        if (err) throw err;
-        res.json(JSON.parse(data));
-    });
+    res.sendFile(path.join(__dirname, "/db/db.json"));
+});
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "/db/db.json"));
 });
 
 app.post("/api/notes", (req, res) => {
-    fs.readFile(path.join(__dirname, "/db/db.json"), "utf8", (err, data) => {
-        if (err) throw err;
-        const db = JSON.parse(data);
-        const newDB = [];
-        db.push(req.body);
+    let newNote = req.body;
+    let noteList = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    let notelength = (noteList.length).toString();
 
-        for (let i = 0; i < db.length; i++) {
-            const newNote = {
-                title: db[i].title,
-                text: db[i].text,
-                id: i
-            };
+    newNote.id = notelength;
 
-            newDB.push(newNote);
-        }
+    noteList.push(newNote);
 
-        fs.writeFile(path.join(__dirname, "/db/db.json"), JSON.stringify(newDB, null, 2), (err) => {
-            if (err) throw err;
-            res.json(req.body);
-        })
+    fs.writeFileSync("./db/db.json", JSON.stringify(noteList));
+    res.json(noteList);
+})
+
+app.delete("/api/notes/:id", (req, res) => {
+    let noteList = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    let noteId = (req.params.id).toString();
+
+    noteList = noteList.filter(selected => {
+        return selected.id != noteId;
     })
-})
 
-app.delete("/api/notes/:id"), (req, res) => {
-    const id = parseInt(req.params.id);
-    fs.readFile(path.join(__dirname, "/db/db.json"), "utf8", (err, data) => {
-        if (err) throw err;
-        const db = JSON.parse(data);
-        const newDB = [];
+    fs.writeFileSync("./db/db.json", JSON.stringify(noteList));
+    res.json(noteList);
+});
 
-        for (let i = 0; i < db.length; i++) {
-            if (i !== id) {
-                const newNote = {
-                    title: db[i].title,
-                    text: db[i].text,
-                    id: i
-                };
-
-                newDB.push(newNote);
-            }
-        }
-
-        fs.writeFile(path.join(__dirname, "/db/db.json"), JSON.stringify(newDB, null, 2), (err) => {
-            if (err) throw err;
-            res.json(req.body);
-        });
-    });
-};
-
-app.listen(PORT, () => {
-    console.log(`App listening on PORT ${PORT}.`);
-
-})
+app.listen(PORT, () => console.log("Server listening on port " + PORT));
